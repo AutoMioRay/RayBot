@@ -15,6 +15,7 @@
 | [群聊管理方案](group-management.md) | 群管理开发 | 权限、审批、禁言、黑名单、策略 |
 | [富媒体与素材](media.md) | 图片/视频/文件 | 上传方式、分片、素材图片 |
 | [错误与重试](errors.md) | 排障 | 异常层级、错误码、重试与限流 |
+| [测试与验证](testing.md) | 关注质量 | 测试分层、运行方式、门禁与报告解读 |
 
 ## 推荐阅读路径
 
@@ -22,10 +23,11 @@
 2. 做消息机器人：API 参考的单聊消息/群聊消息 → 富媒体与素材 → 互动按钮与菜单。
 3. 做群管理：群聊管理方案 → API 参考的群聊管理 → 错误与重试。
 4. 做部署：WebSocket 接入与网关 → 配置项 → SECURITY.md。
+5. 关注质量：测试与验证 → 功能测试报告 → 安全测试报告。
 
 ## 安全
 
-当前版本仅支持 WebSocket 传输：平台在建立 WebSocket 连接时即完成认证，不需要暴露任何入站端口。Webhook 事件通道已因协议层的签名预言机风险封藏至 [archive/webhook/](../archive/webhook/README.md)。
+当前版本仅支持 WebSocket 传输：平台在建立 WebSocket 连接时即完成认证，不需要暴露任何入站端口。Webhook 事件通道因协议层的签名预言机风险未随使用者版本分发，相关材料见开发分支的 [archive/webhook/](https://github.com/AutoMioRay/RayBot/tree/develop/archive/webhook)。
 
 漏洞披露流程见 [SECURITY.md](../SECURITY.md)。
 

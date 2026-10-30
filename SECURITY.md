@@ -36,7 +36,7 @@ TLS termination at a reverse proxy, per-IP rate limiting).
 The current package therefore supports the WebSocket transport only, which
 authenticates on the platform side and requires no inbound ports. The archived
 implementation, the full risk description and restore instructions live in
-[archive/webhook/README.md](archive/webhook/README.md). Do not re-enable
+the Webhook transport unless the design is reworked; see `archive/webhook/` on the develop branch. Do not re-enable
 Webhook in production without reading that document first.
 
 Note that the platform's **server IP allowlist** restricts outbound calls from

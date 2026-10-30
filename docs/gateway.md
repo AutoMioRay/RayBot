@@ -123,11 +123,11 @@ Authorization: QQBot {access_token}
 
 ## 关于已封藏的 Webhook
 
-Webhook 事件通道已在 0.2.0 整体封藏至 [archive/webhook/](../archive/webhook/README.md)，当前包仅支持 WebSocket 传输。
+Webhook 事件通道已在 0.2.0 整体封藏，未随使用者版本分发；当前包仅支持 WebSocket 传输。
 
 封藏的主要原因是协议层的**签名预言机风险**：QQ Webhook 的 `op=13` 回调地址验证端点与事件验签共用同一把 Ed25519 密钥，公网暴露验证端点时攻击者可对任意 `plain_token` 取得签名并伪造事件；该风险无法在不引入入站 IP 白名单、TLS 反代、限流等额外部署配套的前提下根除。此外 WebSocket 在平台侧即完成认证，不需要暴露任何入站端口。
 
-封藏内容清单、完整风险说明与恢复步骤见 [archive/webhook/README.md](../archive/webhook/README.md)；安全模型见 [SECURITY.md](../SECURITY.md)。
+封藏内容清单、完整风险说明与恢复步骤见开发分支的 [archive/webhook/](https://github.com/AutoMioRay/RayBot/tree/develop/archive/webhook)；安全模型见 [SECURITY.md](../SECURITY.md)。
 
 ## 常见问题
 
