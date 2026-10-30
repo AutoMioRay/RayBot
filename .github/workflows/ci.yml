@@ -23,10 +23,10 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
           python-version: "3.13.12"
@@ -40,7 +40,7 @@ jobs:
         run: uv run --frozen python tools/ci/gate.py scan
       - name: Upload reports and distributions
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ci-reports
           path: |
@@ -54,10 +54,10 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
           python-version: "3.13.12"
@@ -67,7 +67,7 @@ jobs:
         run: uv run --frozen python tools/ci/gate.py test --examples 500
       - name: Upload test reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-reports-windows
           path: reports/ci/
@@ -83,11 +83,11 @@ jobs:
       contents: read
       pull-requests: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - name: Dependency review (fail on high severity)
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@v5
         with:
           fail-on-severity: high
           comment-summary-in-pr: never
