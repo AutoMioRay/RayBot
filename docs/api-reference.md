@@ -995,7 +995,7 @@ bot.run()                  # WebSocket
 await bot.start()          # 事件总线 + WebSocket
 ```
 
-当前版本仅支持 WebSocket 传输；Webhook 事件通道已封藏至 [archive/webhook/](../archive/webhook/README.md)。详细协议见 [WebSocket 接入与网关](gateway.md)。
+当前版本仅支持 WebSocket 传输；Webhook 事件通道未随使用者版本分发（见开发分支）。详细协议见 [WebSocket 接入与网关](gateway.md)。
 
 ### WebSocket
 

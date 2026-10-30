@@ -11,8 +11,8 @@ The included CI workflow is GitHub Actions compatible. If the GitCode repository
 ```bash
 uv sync
 uv run pytest
-uv run ruff check src tests examples
-uv run ruff format --check src tests examples
+uv run ruff check RayBot tests examples tools
+uv run ruff format --check RayBot tests examples tools
 uv build
 ```
 
@@ -20,18 +20,28 @@ uv build
 
 | Branch | Purpose |
 |---|---|
-| `main` | Release-only branch; every commit should be tagged or release-ready |
-| `develop` | Integration branch for the next release |
+| `main` | Curated **user-facing** release branch: package, functional/security tests, user manual, two test reports |
+| `develop` | Full development branch: additionally architecture notes, CI design, performance/fix/audit records, archived code and developer tooling |
 | `feature/*`, `fix/*`, `docs/*` | Short-lived work branches |
+
+`main` is a strict subset of `develop`: everything on `main` exists on
+`develop`, but development-only material is excluded (see
+`tools/release/main-excludes.txt`).
 
 Workflow:
 
 1. Branch from `develop`.
 2. Open a pull request targeting `develop`.
 3. Keep CI and tests green.
-4. Release: update `CHANGELOG.md` and the version, merge `develop` into `main`,
-   run a final build, and tag `vX.Y.Z` on `main`.
-5. Merge `main` back into `develop` after release if release-only commits exist.
+4. Release: update `CHANGELOG.md` and the version, then build the curated
+   `main` tree and open a PR into `main`:
+
+   ```bash
+   python tools/release/prepare_main.py            # creates release/main-clean
+   # push the branch, open a PR into main, let required checks pass, merge
+   ```
+
+5. Tag `vX.Y.Z` on `main` after the merge.
 
 Do not commit directly to `main` or `develop` except for maintainer release
 commits.

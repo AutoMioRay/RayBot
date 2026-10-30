@@ -1,0 +1,29 @@
+# Development-only material excluded from the user-facing `main` branch.
+#
+# One path per line, relative to the repository root. Directories end with "/".
+# Lines starting with "#" are comments. Keep this list in sync with
+# docs/testing.md and the README "分支说明" section.
+#
+# Rationale: `main` ships only what library users need — the package,
+# functional/security tests, the user manual and the two test reports.
+
+# Archived transports and historical code
+archive/
+
+# Alternative CI platform definitions (GitHub Actions is the primary CI)
+.workflow/
+
+# Developer tooling (CI gate and secret scanner stay: they power required
+# checks and are reusable by users)
+tools/bench_json.py
+tools/soak_test.py
+tools/github/
+tools/release/
+
+# Internal engineering reports (not user-facing)
+reports/全流程报告.md
+reports/性能优化报告.md
+reports/漏洞修复报告.md
+reports/CI工作流设计.md
+reports/安全流程审核报告.md
+reports/安全测试方案（基线）.md
