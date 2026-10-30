@@ -5,7 +5,7 @@
 ## 背景
 
 当前项目暂时只使用 **WebSocket** 事件通道。出于收缩攻击面与降低维护成本的考虑，
-Webhook 相关代码已从主包 `qqbot_toolkit` 中整体卸载，**原样封藏**于本目录，
+Webhook 相关代码已从主包 `RayBot` 中整体卸载，**原样封藏**于本目录，
 未做任何功能性改写，未来需要时可按下方步骤恢复。
 
 被封藏的主要理由（详见 `SECURITY.md` 与封藏时的安全测试报告）：
@@ -21,8 +21,8 @@ Webhook 相关代码已从主包 `qqbot_toolkit` 中整体卸载，**原样封�
 
 | 文件 | 原位置 | 说明 |
 |---|---|---|
-| `webhook.py` | `src/qqbot_toolkit/gateway/webhook.py` | aiohttp 回调服务器（验签、op=13、ACK、入站限流、IP 白名单） |
-| `signature.py` | `src/qqbot_toolkit/gateway/signature.py` | Ed25519 签名/验签与密钥派生 |
+| `webhook.py` | `RayBot/core/gateway/webhook.py` | aiohttp 回调服务器（验签、op=13、ACK、入站限流、IP 白名单） |
+| `signature.py` | `RayBot/core/gateway/signature.py` | Ed25519 签名/验签与密钥派生 |
 | `test_webhook.py` | `tests/test_webhook.py` | Webhook 服务器测试 |
 | `test_signature.py` | `tests/test_signature.py` | 签名测试 |
 | `webhook_bot_example.py` | `examples/webhook_bot.py` | Webhook 示例机器人 |
@@ -44,7 +44,12 @@ Webhook 相关代码已从主包 `qqbot_toolkit` 中整体卸载，**原样封�
 
 ## 如何恢复（如未来需要 Webhook）
 
-1. 将 `webhook.py`、`signature.py` 复制回 `src/qqbot_toolkit/gateway/`；
+> 0.2.0 起封藏代码保持历史原样，其 import 仍为旧包名 `qqbot_toolkit`；
+> 恢复时请将 `from qqbot_toolkit...` 改为 `from RayBot.core...`（例如
+> `from qqbot_toolkit.gateway.signature import ...` →
+> `from RayBot.core.gateway.signature import ...`）。
+
+1. 将 `webhook.py`、`signature.py` 复制回 `RayBot/core/gateway/`；
 2. 在 `config.py` 中恢复 `WebhookConfig` 与 `BotConfig.webhook` 字段
    （见 `archive` 中的 `config.py.webhook.patch` 节选，或从版本历史对照恢复）；
 3. 在 `errors.py` 中恢复 `SignatureVerificationError`；
