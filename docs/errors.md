@@ -11,7 +11,7 @@ QQBotError
 └── PayloadError             网关 payload 无法解析
 ```
 
-所有异常都可以从 `qqbot_toolkit.errors` 导入，主要异常也从包根导出。
+所有异常都可以从 `RayBot.core.errors` 导入，主要异常也从包根导出。
 
 ## APIError
 
@@ -70,7 +70,7 @@ delay = min(retry_max_delay, retry_base_delay * 2^attempt) + random(0, retry_bas
 
 ```python
 from dataclasses import replace
-from qqbot_toolkit import HTTPConfig
+from RayBot import HTTPConfig
 
 http = replace(HTTPConfig(), max_retries=0)
 ```

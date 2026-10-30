@@ -5,9 +5,9 @@ import json
 import httpx
 import pytest
 
-from qqbot_toolkit.auth import AccessToken, TokenManager
-from qqbot_toolkit.config import HTTPConfig
-from qqbot_toolkit.errors import AuthenticationError
+from RayBot.core.auth import AccessToken, TokenManager
+from RayBot.core.config import HTTPConfig
+from RayBot.core.errors import AuthenticationError
 
 from .conftest import TOKEN_PATH
 

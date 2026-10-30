@@ -20,8 +20,8 @@ import argparse
 import asyncio
 from dataclasses import replace
 
-from qqbot_toolkit import Bot, BotConfig, ReadyEvent
-from qqbot_toolkit.errors import APIError
+from RayBot import Bot, BotConfig, ReadyEvent
+from RayBot.core.errors import APIError
 
 
 async def run(*, gateway: bool) -> None:
@@ -90,7 +90,7 @@ async def run(*, gateway: bool) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="qqbot-toolkit live smoke test")
+    parser = argparse.ArgumentParser(description="RayBot live smoke test")
     parser.add_argument(
         "--gateway",
         action="store_true",

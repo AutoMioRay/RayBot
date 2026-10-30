@@ -19,11 +19,11 @@ from cryptography.hazmat.primitives.asymmetric import ed25519
 from cryptography.x509.oid import NameOID
 from websockets.asyncio.server import serve
 
-from qqbot_toolkit.config import GatewayConfig
-from qqbot_toolkit.errors import GatewayError
-from qqbot_toolkit.events import EventBus
-from qqbot_toolkit.gateway.ws import GatewayClient
-from qqbot_toolkit.models import GatewayInfo, SessionStartLimit
+from RayBot.core.config import GatewayConfig
+from RayBot.core.errors import GatewayError
+from RayBot.core.events import EventBus
+from RayBot.core.gateway.ws import GatewayClient
+from RayBot.core.models import GatewayInfo, SessionStartLimit
 
 from .ws_helpers import ScriptedServer, hello, ready
 

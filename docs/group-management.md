@@ -64,7 +64,7 @@ GROUP_JOIN_REQUEST ─► 审批编排器           ├─► approve/decline
 ### 事件驱动
 
 ```python
-from qqbot_toolkit import Bot, BotConfig, GroupJoinRequest
+from RayBot import Bot, BotConfig, GroupJoinRequest
 
 bot = Bot(BotConfig.from_env())
 KEYWORD = "申请理由"
@@ -163,7 +163,7 @@ await bot.groups.unmute_member(group_openid, member_openid)
 批量操作：
 
 ```python
-from qqbot_toolkit.models.outbound import MemberMuteChange
+from RayBot.core.models.outbound import MemberMuteChange
 
 await bot.groups.set_member_mutes(group_openid, [
     MemberMuteChange(op="add", member_openid="M1", mute_expire_at=until),
@@ -201,7 +201,7 @@ await bot.groups.update_blacklist(group_openid, "del", ["MEMBER_3"])
 ## 权限校验与降级
 
 ```python
-from qqbot_toolkit.errors import APIError
+from RayBot.core.errors import APIError
 
 async def ensure_admin(group_openid: str) -> bool:
     state = await bot.groups.get_bot_state(group_openid)

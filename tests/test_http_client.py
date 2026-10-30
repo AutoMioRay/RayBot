@@ -3,9 +3,9 @@ from __future__ import annotations
 import httpx
 import pytest
 
-from qqbot_toolkit.config import HTTPConfig
-from qqbot_toolkit.errors import APIError
-from qqbot_toolkit.http import APIClient
+from RayBot.core.config import HTTPConfig
+from RayBot.core.errors import APIError
+from RayBot.core.http import APIClient
 
 from .conftest import FakeTokens
 

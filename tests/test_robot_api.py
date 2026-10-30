@@ -5,8 +5,8 @@ import json
 import httpx
 import pytest
 
-from qqbot_toolkit import Bot
-from qqbot_toolkit.models.outbound import Panel, PanelItem
+from RayBot import Bot
+from RayBot.core.models.outbound import Panel, PanelItem
 
 from .conftest import api_transport, json_response, make_config
 

@@ -8,11 +8,11 @@ import pytest
 from websockets.asyncio.server import serve
 from websockets.exceptions import ConnectionClosed
 
-from qqbot_toolkit.config import GatewayConfig
-from qqbot_toolkit.errors import ConfigurationError
-from qqbot_toolkit.events import EventBus
-from qqbot_toolkit.gateway.ws import GatewayClient
-from qqbot_toolkit.models import GatewayInfo, SessionStartLimit
+from RayBot.core.config import GatewayConfig
+from RayBot.core.errors import ConfigurationError
+from RayBot.core.events import EventBus
+from RayBot.core.gateway.ws import GatewayClient
+from RayBot.core.models import GatewayInfo, SessionStartLimit
 
 
 class FakeTokens:

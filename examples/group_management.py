@@ -26,7 +26,7 @@ import argparse
 import asyncio
 from datetime import UTC, datetime, timedelta
 
-from qqbot_toolkit import Bot, BotConfig
+from RayBot import Bot, BotConfig
 
 
 async def run(args: argparse.Namespace) -> None:

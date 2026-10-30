@@ -114,7 +114,7 @@ def pyproject_version() -> str:
 
 
 def source_version() -> str:
-    text = (ROOT / "src" / "qqbot_toolkit" / "constants.py").read_text(encoding="utf-8")
+    text = (ROOT / "RayBot" / "core" / "constants.py").read_text(encoding="utf-8")
     match = re.search(r'__version__\s*=\s*"([^"]+)"', text)
     if not match:
         raise SystemExit("could not read __version__ from constants.py")
@@ -166,7 +166,7 @@ def _prepare_reports() -> None:
 def step_build(args: argparse.Namespace) -> None:
     _prepare_reports()
     # Syntax gate first: a broken import path must fail before packaging.
-    run([*_python(), "compileall", "-q", "src"])
+    run([*_python(), "compileall", "-q", "RayBot"])
     log(f"python {platform_python_version()} compileall OK")
 
     if DIST.exists():
@@ -211,7 +211,7 @@ def step_test(args: argparse.Namespace) -> None:
             *_python(),
             "pytest",
             "-q",
-            "--cov=src/qqbot_toolkit",
+            "--cov=RayBot/core",
             "--cov-report=term",
             f"--cov-report=xml:{REPORTS / 'coverage.xml'}",
             f"--junitxml={REPORTS / 'junit.xml'}",
@@ -229,7 +229,7 @@ def _run_ruff() -> None:
             *_python(),
             "ruff",
             "check",
-            "src",
+            "RayBot",
             "tests",
             "examples",
             "tools",
@@ -244,7 +244,7 @@ def _run_ruff() -> None:
     if result.returncode != 0:
         print(payload[:4000] or result.stderr[-4000:])
         raise SystemExit("ruff reported findings")
-    run([*_python(), "ruff", "format", "--check", "src", "tests", "examples", "tools"])
+    run([*_python(), "ruff", "format", "--check", "RayBot", "tests", "examples", "tools"])
     log("ruff: 0 findings, formatting clean")
 
 
@@ -255,7 +255,7 @@ def _run_bandit() -> None:
             *_python(),
             "bandit",
             "-r",
-            "src",
+            "RayBot",
             "-ll",
             "-q",
             "-f",
@@ -440,9 +440,7 @@ def _create_gitee_release(token: str, repo: str, tag: str, version: str, sums: l
     import urllib.parse
     import urllib.request
 
-    body = "\n".join(
-        ["## 发布内容", "", f"- qqbot-toolkit {version}", "- 校验和：", "```", *sums, "```"]
-    )
+    body = "\n".join(["## 发布内容", "", f"- RayBot {version}", "- 校验和：", "```", *sums, "```"])
     data = urllib.parse.urlencode(
         {
             "access_token": token,

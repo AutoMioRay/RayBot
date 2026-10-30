@@ -9,10 +9,10 @@ import time
 import httpx
 import pytest
 
-from qqbot_toolkit.auth import TokenManager
-from qqbot_toolkit.config import HTTPConfig
-from qqbot_toolkit.errors import AuthenticationError
-from qqbot_toolkit.events import EventBus
+from RayBot.core.auth import TokenManager
+from RayBot.core.config import HTTPConfig
+from RayBot.core.errors import AuthenticationError
+from RayBot.core.events import EventBus
 
 TOKEN_PATH = "/app/getAppAccessToken"
 SECRET_TOKEN = "SECRET-TOKEN-XYZ-do-not-log"
@@ -176,7 +176,7 @@ async def test_background_refresh_failure_does_not_kill_manager(
 async def test_event_ordering_preserved_single_worker() -> None:
     """S4-15: with one worker, events are processed in publish order."""
 
-    from qqbot_toolkit.models.events import UnknownEvent
+    from RayBot.core.models.events import UnknownEvent
 
     bus = EventBus(concurrency=1, queue_size=256)
     seen: list[int] = []
@@ -200,7 +200,7 @@ async def test_event_ordering_preserved_single_worker() -> None:
 async def test_drop_policy_discards_and_counts_when_full() -> None:
     """S4-06/S4-07: overflow=drop keeps the producer unblocked and counts."""
 
-    from qqbot_toolkit.models.events import UnknownEvent
+    from RayBot.core.models.events import UnknownEvent
 
     release = asyncio.Event()
     bus = EventBus(concurrency=1, queue_size=2, overflow="drop")
@@ -234,7 +234,7 @@ async def test_drop_policy_discards_and_counts_when_full() -> None:
 async def test_block_policy_applies_backpressure() -> None:
     """S4-06 (block): the default policy awaits capacity instead of dropping."""
 
-    from qqbot_toolkit.models.events import UnknownEvent
+    from RayBot.core.models.events import UnknownEvent
 
     release = asyncio.Event()
     bus = EventBus(concurrency=1, queue_size=1, overflow="block")
@@ -262,7 +262,7 @@ async def test_block_policy_applies_backpressure() -> None:
 async def test_concurrent_publish_does_not_lose_events() -> None:
     """S4-14: many concurrent publishers all land in the queue."""
 
-    from qqbot_toolkit.models.events import UnknownEvent
+    from RayBot.core.models.events import UnknownEvent
 
     bus = EventBus(concurrency=8, queue_size=512)
     received = 0

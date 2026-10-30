@@ -4,7 +4,7 @@
 
 ```python
 from dataclasses import replace
-from qqbot_toolkit import BotConfig, GatewayConfig, HTTPConfig
+from RayBot import BotConfig, GatewayConfig, HTTPConfig
 
 config = BotConfig(
     app_id="APPID",
@@ -63,7 +63,7 @@ config = config.with_overrides(gateway=replace(config.gateway, auto_shard=True))
 | `retry_base_delay` | `0.4` | 指数退避基数（秒） |
 | `retry_max_delay` | `8.0` | 指数退避上限（秒） |
 | `token_refresh_margin` | `60.0` | 提前刷新 token 的秒数；不会超过 TTL 的一半 |
-| `user_agent` | `qqbot-toolkit/0.2.0` | HTTP User-Agent（跟随包版本） |
+| `user_agent` | `RayBot/0.2.0` | HTTP User-Agent（跟随包版本） |
 | `enforce_rate_limits` | `True` | 是否启用路由级令牌桶 |
 | `enforce_relation_limits` | `True` | 是否对主动消息启用单用户/单群限流 |
 | `http2` | `False` | 是否启用 HTTP/2；需要安装 `h2` |
@@ -143,13 +143,13 @@ http = replace(HTTPConfig(), enforce_rate_limits=False, enforce_relation_limits=
 默认 `properties`：
 
 ```python
-{"$os": "python", "$browser": "qqbot-toolkit", "$device": "qqbot-toolkit"}
+{"$os": "python", "$browser": "RayBot", "$device": "RayBot"}
 ```
 
 `intents` 可以传 `Intents` 组合：
 
 ```python
-from qqbot_toolkit import GatewayConfig, Intents
+from RayBot import GatewayConfig, Intents
 
 gateway = GatewayConfig(
     intents=Intents.GROUP_AND_C2C_EVENT | Intents.INTERACTION

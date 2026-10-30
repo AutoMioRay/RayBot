@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for improving `qqbot-toolkit`.
+Thanks for improving `RayBot`.
 
 ## Development setup
 

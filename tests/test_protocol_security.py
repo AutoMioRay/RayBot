@@ -15,12 +15,12 @@ import time
 import pytest
 from websockets.exceptions import ConnectionClosed
 
-from qqbot_toolkit.config import GatewayConfig
-from qqbot_toolkit.errors import GatewayError
-from qqbot_toolkit.events import EventBus
-from qqbot_toolkit.gateway.ws import GatewayClient
-from qqbot_toolkit.models import GatewayInfo, SessionStartLimit
-from qqbot_toolkit.net import is_trusted_gateway_url
+from RayBot.core.config import GatewayConfig
+from RayBot.core.errors import GatewayError
+from RayBot.core.events import EventBus
+from RayBot.core.gateway.ws import GatewayClient
+from RayBot.core.models import GatewayInfo, SessionStartLimit
+from RayBot.core.net import is_trusted_gateway_url
 
 from .ws_helpers import ScriptedServer, hello, ready
 
@@ -329,7 +329,7 @@ async def test_reconnect_attempts_are_bounded() -> None:
 def test_reconnect_backoff_is_exponential_with_cap() -> None:
     """S4-01: 1x, 2x, 4x ... capped at reconnect_max_delay."""
 
-    from qqbot_toolkit.gateway.ws import GatewayClient as _GC  # noqa: PLC0415
+    from RayBot.core.gateway.ws import GatewayClient as _GC  # noqa: PLC0415
 
     config = make_config(reconnect_initial_delay=1.0, reconnect_max_delay=8.0)
     bus = EventBus(concurrency=1)

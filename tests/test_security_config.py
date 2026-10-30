@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pytest
 
-from qqbot_toolkit import BotConfig, HTTPConfig
-from qqbot_toolkit.errors import ConfigurationError
+from RayBot import BotConfig, HTTPConfig
+from RayBot.core.errors import ConfigurationError
 
 
 def test_https_is_required_for_non_loopback_base_url() -> None:

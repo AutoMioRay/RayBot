@@ -18,10 +18,10 @@ import sys
 import time
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from qqbot_toolkit._json import ORJSON_AVAILABLE, dumps, loads  # noqa: E402
-from qqbot_toolkit.events.bus import EventBus  # noqa: E402
+from RayBot.core._json import ORJSON_AVAILABLE, dumps, loads  # noqa: E402
+from RayBot.core.events.bus import EventBus  # noqa: E402
 
 EVENT = json.dumps(
     {

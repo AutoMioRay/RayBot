@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Configure GitHub repository settings for the qqbot-toolkit project.
+"""Configure GitHub repository settings for the RayBot project.
 
 Idempotent; run from the repository root:
 

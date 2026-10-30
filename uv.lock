@@ -1108,8 +1108,8 @@ wheels = [
 ]
 
 [[package]]
-name = "qqbot-toolkit"
-version = "0.2.0"
+name = "raybot"
+version = "0.3.0"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },

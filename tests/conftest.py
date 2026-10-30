@@ -8,7 +8,7 @@ from typing import Any
 
 import httpx
 
-from qqbot_toolkit import BotConfig, HTTPConfig
+from RayBot import BotConfig, HTTPConfig
 
 TOKEN_PATH = "/app/getAppAccessToken"
 

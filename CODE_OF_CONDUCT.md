@@ -2,7 +2,7 @@
 
 ## Our commitment
 
-We want participation in `qqbot-toolkit` to be a respectful, harassment-free
+We want participation in `RayBot` to be a respectful, harassment-free
 experience for everyone, regardless of experience level, identity, background,
 or preferred tools.
 
