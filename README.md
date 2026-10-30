@@ -1,6 +1,6 @@
-# qqbot-toolkit
+# RayBot
 
-> 开源免费，MIT License。非官方项目，与腾讯无关联。当前版本：`0.2.0`（Beta）。
+> 开源免费，MIT License。非官方项目，与腾讯无关联。当前版本：`0.3.0`（Beta）。
 
 基于 `asyncio`、`httpx` 与 `websockets` 从零实现的 QQ 机器人组件库。覆盖 QQ 单聊、群聊、群聊管理、富媒体与互动事件，通过 WebSocket 接收事件，不依赖任何 QQ 机器人成型 SDK。
 
@@ -37,7 +37,7 @@ pip install -e .
 PyPI 发布后可直接安装（当前仓库尚未发布到 PyPI）：
 
 ```bash
-pip install qqbot-toolkit
+pip install RayBot
 ```
 
 ## 快速开始：WebSocket 回声机器人
@@ -45,7 +45,7 @@ pip install qqbot-toolkit
 ```python
 import logging
 
-from qqbot_toolkit import Bot, BotConfig, C2CMessage, GroupMessage
+from RayBot import Bot, BotConfig, C2CMessage, GroupMessage
 
 
 def main() -> None:
@@ -93,7 +93,7 @@ uv run python examples/group_management.py mute GROUP_OPENID MEMBER_OPENID 30
 
 ```python
 from dataclasses import replace
-from qqbot_toolkit import BotConfig, HTTPConfig
+from RayBot import BotConfig, HTTPConfig
 
 config = BotConfig(
     app_id="你的 AppID",
@@ -113,24 +113,28 @@ config = BotConfig(
 ## 目录结构
 
 ```text
-src/qqbot_toolkit/
-├── api/          # OpenAPI 分组：消息、群管理、富媒体、机器人、网关、互动
-├── events/       # payload、事件总线、去重
-├── gateway/      # WebSocket 客户端、分片管理
-├── http/         # httpx 客户端、重试、令牌桶限流
-├── models/       # 入站数据模型与出站 payload
-├── auth.py       # access_token 获取与缓存
-├── config.py     # 不可变配置对象
-├── constants.py  # Intents、OpCode、消息类型等协议常量
-├── errors.py     # 异常层级
-└── bot.py        # Bot 门面、装饰器、回复序号管理
+RayBot/                  # 包根：`from RayBot import Bot, BotConfig`
+├── __init__.py          # 公共门面（稳定 API 的 re-export）
+└── core/                # 库核心：`from RayBot.core.<模块> import ...`
+    ├── api/             # OpenAPI 分组：消息、群管理、富媒体、机器人、网关、互动
+    ├── events/          # payload、事件总线、去重
+    ├── gateway/         # WebSocket 客户端、分片管理
+    ├── http/            # httpx 客户端、重试、令牌桶限流
+    ├── models/          # 入站数据模型与出站 payload
+    ├── _json.py         # orjson 兼容层（stdlib 回退）
+    ├── auth.py          # access_token 获取与缓存
+    ├── bot.py           # Bot 门面、装饰器、回复序号管理
+    ├── config.py        # 不可变配置对象
+    ├── constants.py     # Intents、OpCode、消息类型等协议常量
+    ├── errors.py        # 异常层级
+    └── net.py           # 网关 URL / IP 校验
 ```
 
 ## 测试与静态检查
 
 ```bash
 uv run pytest
-uv run ruff check src tests examples
+uv run ruff check RayBot tests examples tools
 
 # 与 CI 完全一致的门禁（构建 → 测试 → 扫描 → 发布演练）
 python tools/ci/gate.py all

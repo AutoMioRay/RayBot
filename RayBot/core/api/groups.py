@@ -34,7 +34,7 @@ class GroupsAPI(BaseAPI):
     Most write operations require the robot to be a group administrator.  The
     platform also marks several member-listing endpoints as invitation-only;
     those calls surface the platform ``err_code`` (usually ``11253``) through
-    :class:`~qqbot_toolkit.errors.APIError`.
+    :class:`~RayBot.core.errors.APIError`.
     """
 
     async def get_info(self, group_openid: str) -> GroupInfo:

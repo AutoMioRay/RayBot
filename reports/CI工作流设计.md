@@ -1,8 +1,28 @@
-# CI 流水线设计：构建 → 测试 → 扫描 → 发布（Gitee Go）
+# CI 流水线设计：构建 → 测试 → 扫描 → 发布（GitHub Actions 主 / Gitee Go 镜像）
 
-- 日期：2026-10-30（第二轮：按 Gitee Go 官方 YAML 规范校正，并明确分支策略）
-- 承载平台：Gitee Go（仓库根 `.workflow/*.yml`，控制台启用后按文件生成流水线）
-- 设计原则：**YAML 只编排，逻辑在脚本**。所有门禁收敛到 `tools/ci/gate.py`，本地与 CI 跑同一套命令。
+- 日期：2026-10-30（第三轮：GitHub Actions 成为主 CI，Gitee Go 保留为镜像）
+- 承载平台：
+  - **GitHub Actions（主）**：`.github/workflows/`，见下节；
+  - **Gitee Go（镜像）**：仓库根 `.workflow/*.yml`，仅在 Gitee 侧生效。
+- 设计原则：**YAML 只编排，逻辑在脚本**。两套平台调用同一个 `tools/ci/gate.py`，门禁逻辑不会漂移；本地与 CI 跑同一套命令。
+
+## 〇、GitHub Actions 工作流（主平台）
+
+| 工作流 | 触发 | 内容 | 关键权限 |
+|---|---|---|---|
+| `ci.yml` → `quality` | push main/develop、PR | install → build → test(500) → scan | `contents: read` |
+| `ci.yml` → `test-windows` | 同上 | Windows 交叉回归 | `contents: read` |
+| `ci.yml` → `dependency-review` | 仅 PR | 依赖变更审查，high 阻断 | `contents/pull-requests: read` |
+| `codeql.yml` → `analyze` | push/PR/每周一 | CodeQL `security-extended` | `security-events: write` |
+| `release.yml` → `verify` → `publish` | tag `v*` | 全量测试(10000)+扫描；发布校验、PyPI OIDC、构建溯源、GitHub Release | `contents: write`、`id-token: write`、`attestations: write` |
+| `nightly.yml` → `nightly-full` | 每日 02:30 CST / 手动 | Fuzz 10000 + 全量扫描 + 全历史密钥扫描 | `contents: read` |
+| `live-smoke.yml` → `live-smoke` | 仅手动 | 真实凭据 token→网关→READY（environment 隔离） | `contents: read` |
+
+GitHub 侧的所有工作流均设置顶层只读权限、`concurrency` 去重、`timeout-minutes`、
+`persist-credentials: false`，且不使用 `pull_request_target`。分支保护（main/develop
+必需 `quality` + `test-windows`）与仓库安全开关由 `tools/github/setup_repo.py` 配置。
+
+以下第一至十节为 **Gitee Go 镜像** 的规范与分支策略（官方 YAML 事实核对、自有主机组等）。
 
 ## 一、Gitee Go 格式核对结果（本轮修正）
 

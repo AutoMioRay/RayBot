@@ -4,6 +4,17 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project adheres to semantic versioning.
 
+## [0.3.0] - 2026-10-30
+
+### Changed (BREAKING)
+
+- Package renamed from `qqbot_toolkit` to `RayBot`, and the implementation moved
+  from `src/qqbot_toolkit/` to `RayBot/core/`. Imports are now
+  `from RayBot import Bot, BotConfig` for the public facade and
+  `from RayBot.core.<module> import ...` for specific modules.
+- Distribution renamed to `RayBot`; project URLs point at
+  `github.com/AutoMioRay/RayBot`. `uv.lock` regenerated.
+
 ## [0.2.0] - 2026-10-30
 
 ### Added

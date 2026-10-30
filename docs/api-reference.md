@@ -22,7 +22,7 @@
 ### 最小可运行示例
 
 ```python
-from qqbot_toolkit import Bot, BotConfig
+from RayBot import Bot, BotConfig
 
 bot = Bot(BotConfig.from_env())
 
@@ -37,7 +37,7 @@ if __name__ == "__main__":
 ### 凭据与 BotConfig
 
 ```python
-from qqbot_toolkit import Bot, BotConfig
+from RayBot import Bot, BotConfig
 
 config = BotConfig(
     app_id="APPID",
@@ -77,7 +77,7 @@ bot = Bot(
 
 ```python
 from dataclasses import replace
-from qqbot_toolkit import HTTPConfig, GatewayConfig
+from RayBot import HTTPConfig, GatewayConfig
 
 config = config.with_overrides(
     http=replace(HTTPConfig(), timeout=20.0, max_retries=3),
@@ -199,7 +199,7 @@ print(msg.id)
 ### 发送 Markdown
 
 ```python
-from qqbot_toolkit.models.outbound import MessageMarkdown
+from RayBot.core.models.outbound import MessageMarkdown
 
 await bot.c2c.send(
     user_openid,
@@ -218,7 +218,7 @@ await bot.c2c.send_markdown(user_openid, "**加粗**")
 先上传，再发送（上传接口见 [富媒体与素材](#富媒体与素材)）：
 
 ```python
-from qqbot_toolkit.api.media import MediaTarget
+from RayBot.core.api.media import MediaTarget
 
 media = await bot.media.upload_file(MediaTarget.c2c(user_openid), "image.png")
 await bot.c2c.send_media(user_openid, media.file_info)
@@ -227,7 +227,7 @@ await bot.c2c.send_media(user_openid, media.file_info)
 ### 键盘与引用
 
 ```python
-from qqbot_toolkit.models.outbound import (
+from RayBot.core.models.outbound import (
     KeyboardRow, MessageReference, command_button, keyboard,
 )
 
@@ -276,7 +276,7 @@ async def on_friend_add(event):
 ### 输入中状态
 
 ```python
-from qqbot_toolkit.models.outbound import InputNotify
+from RayBot.core.models.outbound import InputNotify
 
 await bot.c2c.send(
     user_openid,
@@ -382,7 +382,7 @@ msg = await bot.group.send_text(group_openid, "大家好")
 ### 发送 Markdown
 
 ```python
-from qqbot_toolkit.models.outbound import MessageMarkdown
+from RayBot.core.models.outbound import MessageMarkdown
 
 await bot.group.send(
     group_openid,
@@ -393,7 +393,7 @@ await bot.group.send(
 ### 发送富媒体
 
 ```python
-from qqbot_toolkit.api.media import MediaTarget
+from RayBot.core.api.media import MediaTarget
 
 media = await bot.media.upload_file(MediaTarget.group(group_openid), "image.png")
 await bot.group.send_media(group_openid, media.file_info)
@@ -402,8 +402,8 @@ await bot.group.send_media(group_openid, media.file_info)
 ### @成员、键盘与引用
 
 ```python
-from qqbot_toolkit import mention
-from qqbot_toolkit.models.outbound import KeyboardRow, command_button, keyboard
+from RayBot import mention
+from RayBot.core.models.outbound import KeyboardRow, command_button, keyboard
 
 content = f"{mention(member_openid)} 你好"
 kb = keyboard(KeyboardRow(buttons=[command_button("签到", "/sign", enter=True)]))
@@ -547,7 +547,7 @@ await bot.groups.unmute_member(group_openid, member_openid)
 批量操作：
 
 ```python
-from qqbot_toolkit.models.outbound import MemberMuteChange
+from RayBot.core.models.outbound import MemberMuteChange
 
 await bot.groups.set_member_mutes(group_openid, [
     MemberMuteChange(op="add", member_openid="M1", mute_expire_at=until),
@@ -705,7 +705,7 @@ await bot.groups.delete_strategy(state.strategy_id)
 单聊与群聊的上传目标：
 
 ```python
-from qqbot_toolkit.api.media import MediaTarget
+from RayBot.core.api.media import MediaTarget
 
 MediaTarget.c2c(user_openid)
 MediaTarget.group(group_openid)
@@ -726,8 +726,8 @@ MediaTarget.group(group_openid)
 ### URL 上传
 
 ```python
-from qqbot_toolkit.api.media import MediaTarget
-from qqbot_toolkit.constants import FileType
+from RayBot.core.api.media import MediaTarget
+from RayBot.core.constants import FileType
 
 target = MediaTarget.group(group_openid)
 result = await bot.media.upload_url(
@@ -781,7 +781,7 @@ print(result.id)  # 消息 ID
 
 ```python
 import asyncio
-from qqbot_toolkit.api.media import hash_file
+from RayBot.core.api.media import hash_file
 
 prepared = await bot.media.upload_prepare(
     target,
@@ -843,7 +843,7 @@ await bot.media.delete_image(image.image_id)
 ### 构建键盘
 
 ```python
-from qqbot_toolkit.models.outbound import (
+from RayBot.core.models.outbound import (
     ButtonAction, Keyboard, KeyboardButton, KeyboardContent, KeyboardRow,
     Permission, RenderData, command_button, keyboard, link_button,
 )
@@ -910,7 +910,7 @@ async def on_interaction(event):
 ### 全局自定义菜单
 
 ```python
-from qqbot_toolkit.models.outbound import Menu, MenuItem, SubMenuItem, Switch
+from RayBot.core.models.outbound import Menu, MenuItem, SubMenuItem, Switch
 
 menu = Menu(items=[
     MenuItem(name="帮助", type="send_message", send_message="/help"),
@@ -931,7 +931,7 @@ print(info.version, info.menu)
 ### 指令面板
 
 ```python
-from qqbot_toolkit.models.outbound import Panel, PanelItem
+from RayBot.core.models.outbound import Panel, PanelItem
 
 panel_id = await bot.bot.create_panel(
     scope="group",
@@ -1007,7 +1007,7 @@ print(info.url, info.shards, info.session_start_limit.max_concurrency)
 低级组件构造：
 
 ```python
-from qqbot_toolkit.gateway import GatewayClient, ShardManager
+from RayBot.core.gateway import GatewayClient, ShardManager
 
 GatewayClient(
     token_manager, gateway_api, config, bus, deduplicator=None,
@@ -1031,7 +1031,7 @@ ShardManager(token_manager, gateway_api, config, bus, deduplicator=None)
 ### 事件总线
 
 ```python
-from qqbot_toolkit import EventBus
+from RayBot import EventBus
 
 bus = EventBus(concurrency=64, queue_size=2048)
 bot.bus.subscribe("GROUP_AT_MESSAGE_CREATE", handler, priority=10)
@@ -1052,7 +1052,7 @@ bot.bus.subscribe("GROUP_AT_MESSAGE_CREATE", handler, priority=10)
 ### 去重
 
 ```python
-from qqbot_toolkit import Deduplicator
+from RayBot import Deduplicator
 
 dedup = Deduplicator(ttl=600.0, max_size=20000)
 if dedup.is_duplicate("event-key"):
@@ -1064,7 +1064,7 @@ if dedup.is_duplicate("event-key"):
 ## 错误处理与重试
 
 ```python
-from qqbot_toolkit.errors import APIError
+from RayBot.core.errors import APIError
 
 try:
     await bot.group.send(group_openid, content="通知")

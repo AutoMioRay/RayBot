@@ -53,12 +53,12 @@ from websockets.asyncio.server import serve
 from websockets.exceptions import ConnectionClosed
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from qqbot_toolkit.config import GatewayConfig  # noqa: E402
-from qqbot_toolkit.events import EventBus  # noqa: E402
-from qqbot_toolkit.gateway.ws import GatewayClient  # noqa: E402
-from qqbot_toolkit.models import GatewayInfo, SessionStartLimit  # noqa: E402
+from RayBot.core.config import GatewayConfig  # noqa: E402
+from RayBot.core.events import EventBus  # noqa: E402
+from RayBot.core.gateway.ws import GatewayClient  # noqa: E402
+from RayBot.core.models import GatewayInfo, SessionStartLimit  # noqa: E402
 
 logger = logging.getLogger("soak")
 

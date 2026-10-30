@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from enum import IntEnum, IntFlag, StrEnum
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 API_BASE_URL = "https://api.bot.qq.com"
 DEFAULT_GATEWAY_ENDPOINT = "/gateway/bot"
