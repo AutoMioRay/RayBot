@@ -1,0 +1,89 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  PYTHONUTF8: "1"
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          python-version: "3.13.12"
+      - name: Install dependencies
+        run: uv run --frozen python tools/ci/gate.py install
+      - name: Build distributions
+        run: uv run --frozen python tools/ci/gate.py build
+      - name: Full test suite (fuzz 10000)
+        run: uv run --frozen python tools/ci/gate.py test --examples 10000
+      - name: Full scans
+        run: uv run --frozen python tools/ci/gate.py scan
+      - name: Upload verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-verify-reports
+          path: reports/ci/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  publish:
+    name: publish
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # Repository environment "release" scopes deployment secrets and records
+    # an audit trail. Add required reviewers there for two-person release
+    # control once a second maintainer exists (GitHub blocks self-approval).
+    environment: release
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          python-version: "3.13.12"
+      - name: Install dependencies
+        run: uv run --frozen python tools/ci/gate.py install
+      - name: Release checks (tag == pyproject == constants, twine, checksums)
+        run: uv run --frozen python tools/ci/gate.py release --tag "${GITHUB_REF_NAME}"
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: dist/*
+      - name: Publish to PyPI (OIDC trusted publishing)
+        # Enable by creating the PyPI trusted publisher and setting the
+        # repository variable PYPI_TRUSTED_PUBLISHER=true.
+        if: vars.PYPI_TRUSTED_PUBLISHER == 'true'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*
+          generate_release_notes: true
+          fail_on_unmatched_files: true

@@ -1,0 +1,36 @@
+# Gitee Go 流水线：develop 分支推送门禁
+#
+# develop 是集成分支：直接推送或从功能分支合并后立即验证，尽早发现回归。
+# 额度敏感时可删除本文件——此时 develop 的改动通过「PR 进入 develop」时
+# 仍会由 PRPipeline 门禁把关；但直接 push 到 develop 将不再触发验证。
+#
+# 运行环境见 PRPipeline.yml 头部说明（自有主机组 shell@agent，Python 3.13）。
+version: '1.0'
+name: branch-gate
+displayName: develop 分支门禁（构建-测试-扫描）
+variables:
+  CI_WORKSPACE: .
+  PYTHON_BIN: python3
+triggers:
+  push:
+    branches:
+      precise:
+        - develop
+stages:
+  - stage:
+      name: gate
+      displayName: 构建-测试-扫描
+      strategy: fast
+      trigger: auto
+      steps:
+        - step: shell@agent
+          name: branch-gate
+          displayName: 统一门禁（gate.py）
+          hostGroupID: qqbot-ci
+          script: |
+            set -euo pipefail
+            cd "${CI_WORKSPACE:-.}"
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py install
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py build
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py test --examples 500
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py scan

@@ -1,0 +1,53 @@
+name: Nightly
+
+on:
+  schedule:
+    # 02:30 Asia/Shanghai (18:30 UTC previous day).
+    - cron: "30 18 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nightly
+  cancel-in-progress: false
+
+env:
+  PYTHONUTF8: "1"
+
+jobs:
+  full:
+    name: nightly-full
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0   # full history for the secret-history scan
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          python-version: "3.13.12"
+      - name: Install dependencies
+        run: uv run --frozen python tools/ci/gate.py install
+      - name: Build distributions
+        run: uv run --frozen python tools/ci/gate.py build
+      - name: Full test suite (fuzz 10000)
+        run: uv run --frozen python tools/ci/gate.py test --examples 10000
+      - name: Full scans
+        run: uv run --frozen python tools/ci/gate.py scan
+      - name: Secret scan across full git history
+        run: |
+          uv run --frozen python tools/check_secrets.py --root . --history             --json reports/ci/secrets-history.json
+      - name: Upload nightly reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-reports
+          path: |
+            reports/ci/
+            dist/
+          retention-days: 30
+          if-no-files-found: ignore

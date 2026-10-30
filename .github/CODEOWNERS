@@ -1,0 +1,8 @@
+# Default owner for every path. Expand when the maintainer team grows.
+* @AutoMioRay
+
+# CI and security gates need explicit review.
+/.github/workflows/ @AutoMioRay
+/.workflow/ @AutoMioRay
+/tools/ci/ @AutoMioRay
+/SECURITY.md @AutoMioRay

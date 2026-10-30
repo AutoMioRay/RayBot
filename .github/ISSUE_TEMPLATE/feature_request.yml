@@ -1,0 +1,50 @@
+name: Feature request
+description: Suggest a capability or documentation improvement
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do, and what blocks you?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: API shape, configuration, or documentation change.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - C2C messages
+        - Group messages
+        - Group management
+        - Media
+        - Interactions / menus / panels
+        - WebSocket gateway
+        - Tokens / HTTP / rate limiting
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: This request does not require copying a QQ bot SDK or unofficial protocol implementation.
+          required: true
+        - label: I have searched existing issues.
+          required: true

@@ -1,0 +1,91 @@
+[project]
+name = "qqbot-toolkit"
+version = "0.2.0"
+description = "Modular asyncio-native QQ bot component library"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "MioRay", email = "MioRay@foxmail.com" }]
+keywords = ["qqbot", "qq", "bot", "asyncio", "websocket"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: AsyncIO",
+    "Operating System :: OS Independent",
+    "Topic :: Communications :: Chat",
+    "Topic :: Software Development :: Libraries",
+    "Typing :: Typed",
+]
+requires-python = ">=3.13.12"
+dependencies = [
+    "httpx>=0.28.1",
+    "orjson>=3.13.0",
+    "websockets>=17.3",
+]
+
+[project.optional-dependencies]
+# libuv-backed event loop (2-4x faster asyncio scheduling on IO-heavy loads).
+# uvloop does not install on Windows; the standard loop is used there.
+uvloop = ["uvloop>=0.21; sys_platform != 'win32'"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.urls]
+Homepage = "https://gitcode.com/MioRay/qqbot-toolkit"
+Repository = "https://gitcode.com/MioRay/qqbot-toolkit"
+Issues = "https://gitcode.com/MioRay/qqbot-toolkit/issues"
+Documentation = "https://gitcode.com/MioRay/qqbot-toolkit/tree/main/docs"
+Changelog = "https://gitcode.com/MioRay/qqbot-toolkit/blob/main/CHANGELOG.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/qqbot_toolkit"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/QQ机器人开发参考",
+    "/.venv",
+    "/dist",
+    "/.pytest_cache",
+    "/.ruff_cache",
+]
+
+[dependency-groups]
+dev = [
+    "bandit>=1.9.4",
+    "build>=1.2",
+    "cryptography>=50.0.2",
+    "hypothesis>=6.170.13",
+    "pip-audit>=2.9",
+    "psutil>=6.0",
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.14.0",
+    "trustme>=1.2.1",
+    "twine>=6.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC", "S"]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests use asserts, dummy credentials and pseudo-random data; only production
+# code is held to the full bandit rule set.
+"tests/*" = ["S101", "S105", "S106", "S311"]
+# tools/ is repo automation (never shipped): it invokes project tooling through
+# subprocess, calls one hardcoded https Gitee endpoint, and keeps long CLI arg
+# lists on a single line on purpose.
+"tools/*" = ["S101", "S311", "S603", "S607", "S310", "E501"]
+"archive/*" = ["S"]

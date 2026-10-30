@@ -1,0 +1,15 @@
+qqbot-toolkit
+Copyright (c) 2026 MioRay
+
+This project is an unofficial, community-maintained toolkit. It is not
+affiliated with, endorsed by, or sponsored by Tencent.
+
+QQ is a trademark of Tencent. API names, field names and error codes are used
+only for interoperability. The official QQ Bot documentation is not
+redistributed with this project. Documentation under docs/ is an original
+summary of publicly available API behavior; it is not official Tencent
+documentation.
+
+Third-party dependencies are licensed under their own terms. See pyproject.toml
+and the upstream projects for their licenses. This NOTICE is informational and
+does not modify the MIT license in LICENSE.

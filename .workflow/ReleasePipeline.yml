@@ -1,0 +1,53 @@
+# Gitee Go 流水线：发布（v* 标签触发）
+#
+# 发布门禁分两段：
+#   1. verify（自动）：全量测试（Fuzz 10000）+ 全量扫描 + 构建；
+#   2. release（manual）：控制台人工审核后执行版本一致性校验、twine check、
+#      SHA256SUMS，以及可选的上传（PYPI_TOKEN / GITEE_TOKEN + GITEE_REPO）。
+# 人工审核即执行安全方案中的「发布前双人确认」。
+#
+# 运行环境见 PRPipeline.yml 头部说明（自有主机组 shell@agent，Python 3.13）。
+version: '1.0'
+name: release
+displayName: Release 发布
+variables:
+  CI_WORKSPACE: .
+  PYTHON_BIN: python3
+triggers:
+  push:
+    tags:
+      prefix:
+        - v
+stages:
+  - stage:
+      name: verify
+      displayName: 1 发布前全量门禁
+      strategy: fast
+      trigger: auto
+      steps:
+        - step: shell@agent
+          name: verify
+          displayName: 构建 / 全量测试 / 全量扫描
+          hostGroupID: qqbot-ci
+          script: |
+            set -euo pipefail
+            cd "${CI_WORKSPACE:-.}"
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py install
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py build
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py test --examples 10000
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py scan
+  - stage:
+      name: release
+      displayName: 2 发布（人工审核）
+      strategy: naturally
+      trigger: manual
+      steps:
+        - step: shell@agent
+          name: release
+          displayName: 版本校验 / twine check / 校验和 / 可选上传
+          hostGroupID: qqbot-ci
+          script: |
+            set -euo pipefail
+            cd "${CI_WORKSPACE:-.}"
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py install
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py release --publish

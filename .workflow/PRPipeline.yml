@@ -1,0 +1,51 @@
+# Gitee Go 流水线：PR 门禁（构建 → 测试 → 扫描）
+#
+# ── 格式说明（对齐 Gitee Go 官方 YAML）────────────────────────────────────
+# version / name / displayName / variables / triggers / stages / steps 均按
+# help.gitee.com/gitee-go 文档编写：
+#   * 触发：pr.branches 匹配的是「源分支」，目标分支由仓库「合并请求保护」约束；
+#   * 阶段：strategy: fast（快速失败）、trigger: auto；
+#   * 任务：step / name / displayName / commands 等字段。
+#
+# ── 运行环境（重要）───────────────────────────────────────────────────────
+# 官方 build@python 插件仅支持 Python 2.7 / 3.6–3.9，本项目要求 >=3.13.12，
+# 因此任务通过「自有主机组」执行（shell@agent）。准备步骤：
+#   1. Gitee Go → 主机管理 → 新建主机组，ID 设为 qqbot-ci，安装 Agent（Linux）；
+#   2. 主机安装 git、uv（curl -LsSf https://astral.sh/uv/install.sh | sh），
+#      uv python install 3.13.12；
+#   3. 控制台变量 PYTHON_BIN 指向 3.13 解释器（如 /home/ci/.local/share/uv/
+#      python/cpython-3.13.12-*/bin/python3）；若 python3 已是 3.13 则无需设置；
+#   4. 控制台变量 CI_WORKSPACE 指向代码检出目录（默认 .，即任务启动目录）。
+#
+# ── 分支策略 ──────────────────────────────────────────────────────────────
+# PR 匹配所有源分支（include: '.*'），配合仓库设置里对 main/develop 的
+# 「合并请求保护 + 必须通过流水线」实现「进 main/develop 必须先过门禁」。
+version: '1.0'
+name: pr-gate
+displayName: PR 门禁（构建-测试-扫描）
+variables:
+  CI_WORKSPACE: .
+  PYTHON_BIN: python3
+triggers:
+  pr:
+    branches:
+      include:
+        - '.*'
+stages:
+  - stage:
+      name: gate
+      displayName: 构建-测试-扫描
+      strategy: fast
+      trigger: auto
+      steps:
+        - step: shell@agent
+          name: pr-gate
+          displayName: 统一门禁（gate.py）
+          hostGroupID: qqbot-ci
+          script: |
+            set -euo pipefail
+            cd "${CI_WORKSPACE:-.}"
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py install
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py build
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py test --examples 500
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py scan

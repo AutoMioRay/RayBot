@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+# Least privilege by default; jobs opt into more only when needed.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONUTF8: "1"
+
+jobs:
+  quality:
+    name: quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          python-version: "3.13.12"
+      - name: Install dependencies
+        run: uv run --frozen python tools/ci/gate.py install
+      - name: Build distributions (syntax gate + wheel/sdist)
+        run: uv run --frozen python tools/ci/gate.py build
+      - name: Tests (unit / protocol / fuzz 500 / hostile-server)
+        run: uv run --frozen python tools/ci/gate.py test --examples 500
+      - name: Scans (ruff+bandit / pip-audit / secrets / coverage gate)
+        run: uv run --frozen python tools/ci/gate.py scan
+      - name: Upload reports and distributions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-reports
+          path: |
+            reports/ci/
+            dist/
+          retention-days: 14
+          if-no-files-found: ignore
+
+  test-windows:
+    name: test-windows
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          python-version: "3.13.12"
+      - name: Install dependencies
+        run: uv run --frozen python tools/ci/gate.py install
+      - name: Tests on Windows (cross-platform regression)
+        run: uv run --frozen python tools/ci/gate.py test --examples 500
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports-windows
+          path: reports/ci/
+          retention-days: 14
+          if-no-files-found: ignore
+
+  dependency-review:
+    name: dependency-review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Dependency review (fail on high severity)
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+          comment-summary-in-pr: never

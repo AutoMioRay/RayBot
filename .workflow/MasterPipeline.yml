@@ -1,0 +1,37 @@
+# Gitee Go 流水线：main 分支推送门禁
+#
+# main 是发布基线（v* 标签从这里打），必须配置 push 门禁：无论是 PR 合并
+# 还是管理员直接推送，进入 main 的每个提交都要重新验证（构建/测试/扫描）。
+# 若云端额度紧张，可删除 BranchPipeline.yml（develop）而保留本文件——
+# main 的门禁不可省。
+#
+# 运行环境见 PRPipeline.yml 头部说明（自有主机组 shell@agent，Python 3.13）。
+version: '1.0'
+name: master-gate
+displayName: main 分支门禁（构建-测试-扫描）
+variables:
+  CI_WORKSPACE: .
+  PYTHON_BIN: python3
+triggers:
+  push:
+    branches:
+      precise:
+        - main
+stages:
+  - stage:
+      name: gate
+      displayName: 构建-测试-扫描
+      strategy: fast
+      trigger: auto
+      steps:
+        - step: shell@agent
+          name: master-gate
+          displayName: 统一门禁（gate.py）
+          hostGroupID: qqbot-ci
+          script: |
+            set -euo pipefail
+            cd "${CI_WORKSPACE:-.}"
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py install
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py build
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py test --examples 500
+            "${PYTHON_BIN:-python3}" tools/ci/gate.py scan
