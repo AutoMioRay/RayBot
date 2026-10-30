@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import asyncio
 
-from qqbot_toolkit.events import EventBus
-from qqbot_toolkit.models import parse_event
+from RayBot.core.events import EventBus
+from RayBot.core.models import parse_event
 
 
 def message_event(content: str = "hi", msg_idx: str = "M1"):

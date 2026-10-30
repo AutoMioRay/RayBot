@@ -30,7 +30,7 @@
 依赖方向自上而下，底层不反向导入 `Bot`，因此 API 分组、事件模型和传输层都可以单独使用。例如只调用 OpenAPI 时，不需要启动事件总线：
 
 ```python
-from qqbot_toolkit import Bot, BotConfig
+from RayBot import Bot, BotConfig
 
 bot = Bot(BotConfig(app_id="...", client_secret="..."))
 state = await bot.groups.get_bot_state("GROUP_OPENID")

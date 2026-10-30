@@ -1,6 +1,6 @@
-# qqbot-toolkit 文档
+# RayBot 文档
 
-`qqbot-toolkit` 是一个开源免费的、基于 asyncio 的 QQ 机器人组件库，非官方项目，与腾讯无关联。
+`RayBot` 是一个开源免费的、基于 asyncio 的 QQ 机器人组件库，非官方项目，与腾讯无关联。
 
 ## 文档地图
 

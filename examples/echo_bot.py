@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import logging
 
-from qqbot_toolkit import Bot, BotConfig, C2CMessage, GroupMessage, InteractionEvent
+from RayBot import Bot, BotConfig, C2CMessage, GroupMessage, InteractionEvent
 
 
 def build_bot() -> Bot:

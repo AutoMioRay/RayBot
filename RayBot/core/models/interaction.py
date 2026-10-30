@@ -100,13 +100,13 @@ class InteractionEvent(Event):
     """A user interaction such as a message-button click.
 
     ``type`` 11 (message button) and 12 (quick menu) must be acknowledged via
-    :meth:`qqbot_toolkit.api.interactions.InteractionsAPI.respond`; the client
+    :meth:`RayBot.core.api.interactions.InteractionsAPI.respond`; the client
     otherwise shows a loading state until timeout.
 
     Two identifiers are present:
 
     * ``id`` - the interaction ID used by ``PUT /interactions/{id}``;
-    * ``event_id`` (from :class:`~qqbot_toolkit.models.base.Event`) - the outer
+    * ``event_id`` (from :class:`~RayBot.core.models.base.Event`) - the outer
       envelope ID used as ``event_id`` when sending a passive reply.
     """
 

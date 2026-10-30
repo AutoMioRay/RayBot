@@ -12,10 +12,10 @@ import os
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
-from qqbot_toolkit.errors import PayloadError
-from qqbot_toolkit.events.payload import GatewayPayload
-from qqbot_toolkit.gateway.ws import GatewayClient
-from qqbot_toolkit.models import UnknownEvent, parse_event
+from RayBot.core.errors import PayloadError
+from RayBot.core.events.payload import GatewayPayload
+from RayBot.core.gateway.ws import GatewayClient
+from RayBot.core.models import UnknownEvent, parse_event
 
 # CI 可调配额：PR 用 500 保证 <5min，nightly 用 10000 做长尾覆盖。
 _FUZZ_EXAMPLES = int(os.environ.get("QQBOT_FUZZ_EXAMPLES", "2000"))
@@ -71,7 +71,7 @@ def test_parse_event_never_crashes(name: str, data: object) -> None:
     event = parse_event(name, data, event_id="evt-1", seq=1)
     assert event is not None
     # Unknown names must degrade to UnknownEvent, not raise.
-    from qqbot_toolkit.models.events import EVENT_REGISTRY  # noqa: PLC0415
+    from RayBot.core.models.events import EVENT_REGISTRY  # noqa: PLC0415
 
     if name not in EVENT_REGISTRY:
         assert isinstance(event, UnknownEvent)
@@ -176,12 +176,12 @@ class _FakeAPI:
 
 
 def _cfg():
-    from qqbot_toolkit.config import GatewayConfig  # noqa: PLC0415
+    from RayBot.core.config import GatewayConfig  # noqa: PLC0415
 
     return GatewayConfig()
 
 
 def _throwaway_bus():
-    from qqbot_toolkit.events import EventBus  # noqa: PLC0415
+    from RayBot.core.events import EventBus  # noqa: PLC0415
 
     return EventBus(concurrency=1)

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from qqbot_toolkit.models import (
+from RayBot.core.models import (
     C2CMessage,
     GroupAllMessage,
     GroupAtMessage,
@@ -8,7 +8,7 @@ from qqbot_toolkit.models import (
     event_dedup_key,
     parse_event,
 )
-from qqbot_toolkit.models.outbound import (
+from RayBot.core.models.outbound import (
     Keyboard,
     KeyboardButton,
     KeyboardContent,
@@ -180,7 +180,7 @@ def test_dedup_key_is_stable_without_event_id_or_seq() -> None:
 
 
 def test_text_interaction_helpers() -> None:
-    from qqbot_toolkit import command_enter, command_input, mention
+    from RayBot import command_enter, command_input, mention
 
     assert mention("U1") == '<qqbot-at-user id="U1" />'
     assert command_enter("a b") == '<qqbot-cmd-enter text="a+b" />'

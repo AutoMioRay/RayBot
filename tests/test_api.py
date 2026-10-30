@@ -6,10 +6,10 @@ import json
 import httpx
 import pytest
 
-from qqbot_toolkit import Bot
-from qqbot_toolkit.api.media import MediaTarget
-from qqbot_toolkit.constants import FileType
-from qqbot_toolkit.models import parse_event
+from RayBot import Bot
+from RayBot.core.api.media import MediaTarget
+from RayBot.core.constants import FileType
+from RayBot.core.models import parse_event
 
 from .conftest import api_transport, json_response, make_config
 

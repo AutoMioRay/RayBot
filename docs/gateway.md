@@ -59,8 +59,8 @@ Authorization: QQBot {access_token}
     "shard": [0, 1],
     "properties": {
       "$os": "python",
-      "$browser": "qqbot-toolkit",
-      "$device": "qqbot-toolkit"
+      "$browser": "RayBot",
+      "$device": "RayBot"
     }
   }
 }

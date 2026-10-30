@@ -1,6 +1,6 @@
 [project]
-name = "qqbot-toolkit"
-version = "0.2.0"
+name = "RayBot"
+version = "0.3.0"
 description = "Modular asyncio-native QQ bot component library"
 readme = "README.md"
 license = "MIT"
@@ -35,14 +35,14 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project.urls]
-Homepage = "https://gitcode.com/MioRay/qqbot-toolkit"
-Repository = "https://gitcode.com/MioRay/qqbot-toolkit"
-Issues = "https://gitcode.com/MioRay/qqbot-toolkit/issues"
-Documentation = "https://gitcode.com/MioRay/qqbot-toolkit/tree/main/docs"
-Changelog = "https://gitcode.com/MioRay/qqbot-toolkit/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/AutoMioRay/RayBot"
+Repository = "https://github.com/AutoMioRay/RayBot"
+Issues = "https://github.com/AutoMioRay/RayBot/issues"
+Documentation = "https://github.com/AutoMioRay/RayBot/tree/main/docs"
+Changelog = "https://github.com/AutoMioRay/RayBot/blob/main/CHANGELOG.md"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/qqbot_toolkit"]
+packages = ["RayBot"]
 
 [tool.hatch.build.targets.sdist]
 exclude = [

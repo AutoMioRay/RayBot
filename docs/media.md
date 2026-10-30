@@ -18,8 +18,8 @@
 文件已在公网可访问：
 
 ```python
-from qqbot_toolkit.api.media import MediaTarget
-from qqbot_toolkit.constants import FileType
+from RayBot.core.api.media import MediaTarget
+from RayBot.core.constants import FileType
 
 target = MediaTarget.group("GROUP_OPENID")
 result = await bot.media.upload_url(
@@ -134,7 +134,7 @@ await bot.media.delete_image(image.image_id)
 await bot.c2c.send(user_openid, media="FILE_INFO", msg_id=event.id, msg_seq=1)
 
 # 也可以传 MediaInfo
-from qqbot_toolkit.models.outbound import MediaInfo
+from RayBot.core.models.outbound import MediaInfo
 await bot.group.send(group_openid, media=MediaInfo(file_info="FILE_INFO"))
 ```
 

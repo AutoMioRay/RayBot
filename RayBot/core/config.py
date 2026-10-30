@@ -30,7 +30,7 @@ class HTTPConfig:
     retry_base_delay: float = 0.4
     retry_max_delay: float = 8.0
     token_refresh_margin: float = 60.0
-    user_agent: str = f"qqbot-toolkit/{__version__}"
+    user_agent: str = f"RayBot/{__version__}"
     enforce_rate_limits: bool = True
     enforce_relation_limits: bool = True
     http2: bool = False
@@ -99,8 +99,8 @@ class GatewayConfig:
     properties: Mapping[str, str] = field(
         default_factory=lambda: {
             "$os": "python",
-            "$browser": "qqbot-toolkit",
-            "$device": "qqbot-toolkit",
+            "$browser": "RayBot",
+            "$device": "RayBot",
         }
     )
 
