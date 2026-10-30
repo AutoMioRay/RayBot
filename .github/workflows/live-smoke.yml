@@ -1,0 +1,38 @@
+name: Live smoke
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: live-smoke
+  cancel-in-progress: false
+
+env:
+  PYTHONUTF8: "1"
+
+jobs:
+  smoke:
+    name: live-smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    # Manual-only pipeline. Credentials live in the "live-smoke" environment
+    # (repository secrets scoped to it) and are never exposed to PR runs.
+    environment: live-smoke
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          python-version: "3.13.12"
+      - name: Install dependencies
+        run: uv run --frozen python tools/ci/gate.py install
+      - name: Real-credential connectivity check (token / gateway / READY)
+        env:
+          QQBOT_APP_ID: ${{ secrets.QQBOT_APP_ID }}
+          QQBOT_CLIENT_SECRET: ${{ secrets.QQBOT_CLIENT_SECRET }}
+        run: uv run --frozen python tools/ci/gate.py smoke

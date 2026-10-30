@@ -1,0 +1,7 @@
+# Dependency-audit exceptions for `tools/ci/gate.py scan` (pip-audit).
+#
+# One advisory/vulnerability ID per line. Every entry must include a comment
+# with the reason and the review date; exceptions are re-reviewed monthly.
+#
+# Example (do not enable without a written justification):
+# GHSA-xxxx-xxxx-xxxx  # no patched release yet; feature not used; reviewed 2026-10-30

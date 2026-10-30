@@ -1,0 +1,35 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Test and tool caches
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# CI-generated reports (uploaded as pipeline artifacts, not committed)
+reports/ci/
+
+# Local long-run soak reports (local-only L4 evidence, never committed)
+reports/local-soak/
+
+# Virtual environments
+.venv
+
+# Local scratch files
+.tmp_docs/
+.tmp_*
+
+# Third-party reference material; do not redistribute
+QQ机器人开发参考/
+
+# IDE / OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
