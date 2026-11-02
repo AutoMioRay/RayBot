@@ -22,11 +22,11 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
           fetch-depth: 0   # full history for the secret-history scan
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
           python-version: "3.13.12"
@@ -43,7 +43,7 @@ jobs:
           uv run --frozen python tools/check_secrets.py --root . --history             --json reports/ci/secrets-history.json
       - name: Upload nightly reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nightly-reports
           path: |
