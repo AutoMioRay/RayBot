@@ -22,10 +22,10 @@ jobs:
     # (repository secrets scoped to it) and are never exposed to PR runs.
     environment: live-smoke
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
           python-version: "3.13.12"
